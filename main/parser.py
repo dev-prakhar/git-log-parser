@@ -1,3 +1,4 @@
+import csv
 import json
 
 from constants import COMMIT, MERGE, AUTHOR, DATE, MESSAGE, JSON_EXPORT, PARSING_ERROR, PARSING_SUCCESS
@@ -137,6 +138,7 @@ class Export:
         commits = [commit.to_json() for commit in self.git_commits]
         with open('git-log.json', 'w') as git_log_file:
             git_log_file.write(json.dumps(commits))
+        git_log_file.close()
 
     def to_csv(self):
         """
@@ -144,5 +146,7 @@ class Export:
         """
         commits = [commit.to_csv() for commit in self.git_commits]
         with open('git-log.csv', 'w') as git_log_file:
-            git_log_file.write('Commit,Merge,Author,Date,Message\n')
-            git_log_file.write('\n'.join(commits))
+            csv_writer = csv.writer(git_log_file)
+            csv_writer.writerow(['Commit', 'Merge', 'Author', 'Date', 'Message'])
+            csv_writer.writerows(commits)
+        git_log_file.close()
