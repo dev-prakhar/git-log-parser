@@ -105,3 +105,7 @@ venv.bak/
 
 # Pycharm
 *.idea/
+
+# Output Files
+*.json
+*.csv
