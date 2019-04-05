@@ -10,7 +10,7 @@ from utils import git_log_via_command, get_string_after_n_space, get_cleaned_log
 
 class Parser(object):
     """
-    Main Class that delgates the parsing to the respective class
+    Main Class that delegates the parsing to the respective class
     """
     def __init__(self, export, file_path, directory, log_count):
         self.export = export
