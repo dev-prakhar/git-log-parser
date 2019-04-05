@@ -74,7 +74,6 @@ class EntryParser:
     def create_entries(self):
         """
         Method responsible for creating git commit dict for every entry
-        :return:
         """
         for log in self.git_log:
             log_attributes = get_cleaned_log(log.splitlines())
@@ -111,7 +110,6 @@ class EntryParser:
         :param author_index:
         :param date_index:
         :param log_attributes:
-        :return:
         """
         if not (
             attribute_is_valid(log_attributes[author_index], AUTHOR) and
