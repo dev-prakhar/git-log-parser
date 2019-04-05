@@ -10,6 +10,6 @@ def catch_exception(func):
         try:
             func(*args, **kwargs)
         except (NonZeroExitCodeException, GitLogParsingException) as exception:
-            Logger.error(exception)
+            Logger.error(exception.message)
             quit()
     return exit_if_failed
