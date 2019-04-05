@@ -28,18 +28,35 @@ def get_cleaned_log(raw_log):
     :param raw_log:
     :return: list of string without stray spaces and new lines
     """
-    return [line.strip() for line in raw_log if line]
+    return [line.strip() for line in raw_log if line.strip()]
 
-def get_git_log_contents(directory, log_count):
+def git_log_via_command(directory, log_count):
     """
-    Method to get git log contents for the given directory and log count
+    Method to get git log contents for the given directory and log count via git log command
     :param directory
     :param log_count:
     :return: list of git log lines
     """
     execute_command(GIT_VALID_DIRECTORY_COMMAND.format(dir=directory))  # exception if directory is not git initialised
     git_log = get_output(GIT_LOG_COMMAND.format(dir=directory, number=log_count)).splitlines(keepends=True)
+    return create_git_log_content(git_log)
 
+def git_log_via_file(file_path):
+    """
+    Method to get git log contents for the given directory and log count via file path
+    :param file_path
+    :return: list of git log lines
+    """
+    git_log_file = open(file_path, "r")
+    git_log = git_log_file.read().splitlines(keepends=True)
+    return create_git_log_content(git_log)
+
+def create_git_log_content(git_log):
+    """
+    Method to generate git log list having each commit as a list item
+    :param git_log:
+    :return: list of git commits
+    """
     git_logs = []
     single_log = ''
     for log in git_log:
@@ -48,10 +65,8 @@ def get_git_log_contents(directory, log_count):
                 git_logs.append(single_log)
                 single_log = ''
         single_log += log
-
     if single_log:
         git_logs.append(single_log)
-
     return git_logs
 
 def get_string_after_n_space(text, n):
@@ -68,3 +83,12 @@ def get_string_after_n_space(text, n):
     :return: string after nth space
     """
     return text.split(' ', n)[-1].strip()
+
+def attribute_is_valid(attribute, key):
+    """
+    Method to return if the attribute is valid
+    :param attribute:
+    :param key:
+    :return:
+    """
+    return attribute.lower().startswith(key)
