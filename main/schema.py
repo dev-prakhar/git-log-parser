@@ -2,7 +2,7 @@ class GitCommit:
     """
     Model to represent a single git __commit entry
     """
-    COMMIT_ENTRY_CSV_FORMAT = '{0.__commit}, {0.__merge}, {0.__author}, {0.__date}, {0.__message}'
+    COMMIT_ENTRY_CSV_FORMAT = '{commit},{merge},{author},{date},{message}'
 
     def __init__(self, commit, author, date, message, merge=''):
         self.__commit = commit
@@ -28,4 +28,6 @@ class GitCommit:
         """
         Representation of commit entry in csv
         """
-        return self.COMMIT_ENTRY_CSV_FORMAT.format(self)
+        return self.COMMIT_ENTRY_CSV_FORMAT.format(
+            commit=self.__commit, merge=self.__merge, author=self.__author, date=self.__date, message=self.__message
+        )
