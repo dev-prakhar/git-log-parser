@@ -19,7 +19,7 @@ def parse_arguments():
     parser = argparse.ArgumentParser()
     group = parser.add_mutually_exclusive_group(required=True)
     add_arg('-e', '--export', choices=EXPORT_CHOICES, help='Parsed git log is exported in this format', required=True)
-    add_arg('-n', '--log-count', type=int, help='Number of commits to be parsed', default=DEFAULT_COMMIT_COUNT)
+    add_arg('-n', '--log-count', type=int, help='Commits to be fetched via command line', default=DEFAULT_COMMIT_COUNT)
     add_group_arg('-f', '--file-path', type=str, help='File path containing git log contents')
     add_group_arg('-d', '--directory', type=str, help='Directory from which git log should be extracted')
     return parser.parse_args().__dict__
