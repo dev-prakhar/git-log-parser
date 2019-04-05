@@ -1,6 +1,14 @@
-class NonZeroExitCodeException(Exception):
+class ExceptionWithMessage(Exception):
+    def __init__(self, message):
+        self.message = message
+
+    def __str__(self):
+        return self.message
+
+
+class NonZeroExitCodeException(ExceptionWithMessage):
     pass
 
 
-class GitLogParsingException(Exception):
+class GitLogParsingException(ExceptionWithMessage):
     pass
