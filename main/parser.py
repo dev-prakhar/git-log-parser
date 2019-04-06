@@ -28,7 +28,7 @@ class Parser(object):
             parsed_objects = DirectoryParser(self.directory, self.log_count).parse()
 
         if parsed_objects:
-            Export(git_commits=parsed_objects, export_to=self.export).export()
+            Exporter(git_commits=parsed_objects, export_to=self.export).export()
             Logger.log(PARSING_SUCCESS.format(file=self.export))
         else:
             raise GitLogParsingException(PARSING_ERROR)
@@ -120,7 +120,7 @@ class EntryParser:
             raise GitLogParsingException(PARSING_ERROR)
 
 
-class Export:
+class Exporter:
     """
     Class responsible for exporting to different files
     """
@@ -129,7 +129,7 @@ class Export:
         self.export_to = export_to
 
     def export(self):
-        return self.to_json() if self.export_to == JSON_EXPORT else self.to_csv()
+        self.to_json() if self.export_to == JSON_EXPORT else self.to_csv()
 
     def to_json(self):
         """
