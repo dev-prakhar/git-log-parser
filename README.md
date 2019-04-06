@@ -7,7 +7,7 @@ A python library to parse git log command
 * Run `python3 parse.py -h` --> This will generate the details on how to parse with different arguments
 
 ## Performance
-* For about `22,500` commits
+* For fetching logs from a directory having about `22,500` commits
     * CSV: `1.488 sec`
     * JSON: `1.627 sec`
     * XML: `24.227 sec` _Parsing to XML takes a long time_
