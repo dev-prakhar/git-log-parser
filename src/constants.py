@@ -1,8 +1,9 @@
 # ------------------------------------------------- parse.py -----------------------------------------------------------
 
 CSV_EXPORT = 'csv'
+XML_EXPORT = 'xml'
 JSON_EXPORT = 'json'
-EXPORT_CHOICES = (CSV_EXPORT, JSON_EXPORT,)
+EXPORT_CHOICES = (CSV_EXPORT, XML_EXPORT, JSON_EXPORT,)
 DEFAULT_COMMIT_COUNT = 5
 
 # -------------------------------------------------- utils.py ----------------------------------------------------------

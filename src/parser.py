@@ -1,7 +1,11 @@
 import csv
 import json
+from xml.dom.minidom import parseString
 
-from constants import COMMIT, MERGE, AUTHOR, DATE, MESSAGE, JSON_EXPORT, PARSING_ERROR, PARSING_SUCCESS
+from dicttoxml import dicttoxml
+
+from constants import COMMIT, MERGE, AUTHOR, DATE, MESSAGE, JSON_EXPORT, PARSING_ERROR, PARSING_SUCCESS, CSV_EXPORT, \
+    XML_EXPORT
 from decorators import catch_exception, raise_parsing_exception
 from exceptions import GitLogParsingException
 from loggers import Logger
@@ -128,8 +132,16 @@ class Exporter:
         self.git_commits = git_commits
         self.export_to = export_to
 
+    def export_format(self):
+        format_to_method_map = {
+            JSON_EXPORT: self.to_json,
+            CSV_EXPORT: self.to_csv,
+            XML_EXPORT: self.to_xml
+        }
+        return format_to_method_map[self.export_to]
+
     def export(self):
-        self.to_json() if self.export_to == JSON_EXPORT else self.to_csv()
+        self.export_format()()
 
     def to_json(self):
         """
@@ -137,7 +149,7 @@ class Exporter:
         """
         commits = [commit.to_json() for commit in self.git_commits]
         with open('git-log.json', 'w') as git_log_file:
-            git_log_file.write(json.dumps(commits))
+            git_log_file.write(json.dumps(commits, indent=4, separators=(',', ': ')))
         git_log_file.close()
 
     def to_csv(self):
@@ -149,4 +161,15 @@ class Exporter:
             csv_writer = csv.writer(git_log_file)
             csv_writer.writerow(['Commit', 'Merge', 'Author', 'Date', 'Message'])
             csv_writer.writerows(commits)
+        git_log_file.close()
+
+    def to_xml(self):
+        """
+        Method to export the logs to an xml file
+        """
+        commits = [commit.to_json() for commit in self.git_commits]
+        with open('git-log.xml', 'w') as git_log_file:
+            raw_xml = dicttoxml(commits, attr_type=False, custom_root='git_log')
+            pretty_xml = parseString(raw_xml).toprettyxml()
+            git_log_file.write(pretty_xml)
         git_log_file.close()
