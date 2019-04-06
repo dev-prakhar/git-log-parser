@@ -92,3 +92,11 @@ def attribute_is_valid(attribute, key):
     :return:
     """
     return attribute.lower().startswith(key)
+
+def replace_unwanted_xml_attrs(body):
+    """
+    Method to return transformed string after removing all the unwanted characters from given xml body
+    :param body:
+    :return:
+    """
+    return body.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')

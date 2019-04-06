@@ -1,8 +1,5 @@
 import csv
 import json
-from xml.dom.minidom import parseString
-
-from dicttoxml import dicttoxml
 
 from constants import COMMIT, MERGE, AUTHOR, DATE, MESSAGE, JSON_EXPORT, PARSING_ERROR, PARSING_SUCCESS, CSV_EXPORT, \
     XML_EXPORT
@@ -17,6 +14,7 @@ class Parser(object):
     """
     Main Class that delegates the parsing to the respective class
     """
+
     def __init__(self, export, file_path, directory, log_count):
         self.export = export
         self.file_path = file_path
@@ -42,6 +40,7 @@ class FileParser:
     """
     Parser that is used if file path is given
     """
+
     def __init__(self, file_path):
         self.file_path = file_path
 
@@ -55,6 +54,7 @@ class DirectoryParser:
     """
     Parser that is used if directory is given
     """
+
     def __init__(self, directory, log_count):
         self.directory = directory
         self.log_count = log_count
@@ -68,6 +68,7 @@ class EntryParser:
     """
     Parses each commit entry in git log
     """
+
     def __init__(self, git_log):
         self.git_log = git_log
         self.entries = []
@@ -89,7 +90,7 @@ class EntryParser:
                 MERGE: merge,
                 AUTHOR: get_string_after_n_space(log_attributes[author_index], 1),
                 DATE: get_string_after_n_space(log_attributes[date_index], 1),
-                MESSAGE: '. '.join(log_attributes[date_index+1:])
+                MESSAGE: '. '.join(log_attributes[date_index + 1:])
             }
             self.entries.append(entry)
 
@@ -128,6 +129,7 @@ class Exporter:
     """
     Class responsible for exporting to different files
     """
+
     def __init__(self, git_commits, export_to):
         self.git_commits = git_commits
         self.export_to = export_to
@@ -167,9 +169,10 @@ class Exporter:
         """
         Method to export the logs to an xml file
         """
-        commits = [commit.to_json() for commit in self.git_commits]
+        commits = [commit.to_xml() for commit in self.git_commits]
         with open('git-log.xml', 'w') as git_log_file:
-            raw_xml = dicttoxml(commits, attr_type=False, custom_root='git_log')
-            pretty_xml = parseString(raw_xml).toprettyxml()
-            git_log_file.write(pretty_xml)
+            git_log_file.write('<?xml version="1.0" ?>\n')
+            git_log_file.write('<git_log>\n')
+            git_log_file.write(''.join(commits))
+            git_log_file.write('</git_log>\n')
         git_log_file.close()
