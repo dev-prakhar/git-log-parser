@@ -1,6 +1,6 @@
 class GitCommit:
     """
-    Model to represent a single git __commit entry
+    Model to represent a single git commit entry
     """
     def __init__(self, commit, author, date, message, merge=''):
         self.__commit = commit
